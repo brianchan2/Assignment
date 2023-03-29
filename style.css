@@ -1,9 +1,21 @@
 * {
     background-color: black;
+    color: white;
+    font-family: sans-serif;
+    user-select: none;
 }
 
 #topNav {
     color: white;
     text-align: center;
     font-family: sans-serif;
+}
+
+.tag {
+    background-color: grey;
+    width: fit-content;
+    padding: 0.5rem;
+    border-radius: 0.2rem;
+    margin: 0.1rem;
+    display: inline;
 }
