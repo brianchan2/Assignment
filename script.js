@@ -4,9 +4,61 @@ let movieid = 550
 
 let select = document.querySelector("select")
 
-async function getTrailers(info) {
-    if (info.videos) {
+async function getTrailers(frame) {
+    let videos = await axios({
+        url: `https://api.themoviedb.org/3/movie/${movieid}/videos`,
+        params: {
+            api_key: API_KEY
+        }
+    }).catch(err => {
+        console.log(err)
+    })
+    let trailer = videos.data.results.filter(video => video.type == "Trailer")
+    let current = 0
+    frame.style.display = "flex"
+    frame.style.flexDirection = "row"
+    frame.style.alignItems = "center"
+    frame.style.gap = "1rem"
+    if (trailer.length) {
+        let iframe = document.createElement("iframe")
+        iframe.src = `https://www.youtube.com/embed/${trailer[0].key}`
+        iframe.style.display = "inline"
+        frame.append(iframe)
+        if (trailer.length > 1) {
+            let right = document.createElement("h3")
+            right.style.display = "inline"
+            right.style.userSelect = "none"
+            right.innerText = ">"
+            frame.append(right)
 
+            let left = document.createElement("h3")
+            left.style.display = "inline"
+            left.style.userSelect = "none"
+            left.innerText = "<"
+            left.style.visibility = "hidden"
+            left.style.position = "absolute"
+            frame.insertBefore(left, iframe)
+
+            right.addEventListener("click", () => {
+                current += 1
+                iframe.src = `https://www.youtube.com/embed/${trailer[current].key}`
+                if (current == trailer.length - 1) {
+                    right.style.visibility = "hidden"
+                    left.style.visibility = "visible"
+                    left.style.position = "relative"
+                }
+            })
+
+            left.addEventListener("click", () => {
+                current -= 1
+                iframe.src = `https://www.youtube.com/embed/${trailer[current].key}`
+                if (current == 0) {
+                    left.style.visibility = "hidden"
+                    left.style.position = "absolute"
+                    right.style.visibility = "visible"
+                }
+            })
+        }
     }
 }
 
@@ -20,7 +72,7 @@ async function createDetails() {
     const items = {
         title: document.createElement("h2"),
         description: document.createElement("h3"),
-        trailer:  document.createElement("iframe"),
+        trailer:  document.createElement("div"),
         budget: document.createElement("h4"),
         popularity: document.createElement("h4"),
         release: document.createElement("h4"),
@@ -68,7 +120,7 @@ async function createDetails() {
 
         console.log(info)    
 
-        getTrailers(info)
+        getTrailers(items["trailer"])
     }
 }
 
