@@ -129,3 +129,9 @@ select.addEventListener("change", () => {
     deletediv()
     createDetails()
 })
+
+document.querySelector("button").addEventListener("click", () => {
+    movieid = select.value
+    deletediv()
+    createDetails()
+})
