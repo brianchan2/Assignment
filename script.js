@@ -9,11 +9,13 @@ async function getTrailers(info) {
 
     }
 }
+
 async function deletediv(){
     movieInfo.remove();
     movieInfo = document.createElement("div");
     document.body.append(movieInfo)
 }
+
 async function createDetails() {
     const items = {
         title: document.createElement("h2"),
