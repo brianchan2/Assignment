@@ -1,31 +1,58 @@
 * {
-    color: white;
-    font-family: sans-serif;
+  color: white;
+  font-family: sans-serif;
 }
 
 select {
-    background-color: black;
+  background-color: black;
 }
 
 body {
-    background-color: black;
+  background-color: black;
 }
 
 button {
-    background-color: grey;
+  background-color: grey;
 }
 
 #topNav {
-    color: white;
-    text-align: center;
-    font-family: sans-serif;
+  color: white;
+  text-align: center;
+  font-family: sans-serif;
+  margin: 0;
 }
 
 .tag {
-    background-color: grey;
-    width: fit-content;
-    padding: 0.5rem;
-    border-radius: 0.2rem;
-    margin: 0.1rem;
-    display: inline;
+  background-color: grey;
+  width: fit-content;
+  padding: 0.5rem;
+  border-radius: 0.2rem;
+  margin: 0.1rem;
+  display: inline;
+}
+
+#frame {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+#right {
+  display: "inline";
+}
+
+#left {
+  display: "inline";
+  visibility: hidden;
+  position: absolute;
+}
+
+#income {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  height: auto;
+  width: auto;
+  align-items: center;
 }

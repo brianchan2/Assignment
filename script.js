@@ -4,7 +4,8 @@ let movieid = 550
 
 let select = document.querySelector("select")
 
-async function getTrailers(frame) {
+async function getTrailers(items) {
+    let frame = items["trailer"]
     let videos = await axios({
         url: `https://api.themoviedb.org/3/movie/${movieid}/videos`,
         params: {
@@ -15,10 +16,7 @@ async function getTrailers(frame) {
     })
     let trailer = videos.data.results.filter(video => video.type == "Trailer")
     let current = 0
-    frame.style.display = "flex"
-    frame.style.flexDirection = "row"
-    frame.style.alignItems = "center"
-    frame.style.gap = "1rem"
+    frame.id = "frame"
     if (trailer.length) {
         let iframe = document.createElement("iframe")
         iframe.src = `https://www.youtube.com/embed/${trailer[0].key}`
@@ -26,17 +24,15 @@ async function getTrailers(frame) {
         frame.append(iframe)
         if (trailer.length > 1) {
             let right = document.createElement("h3")
-            right.style.display = "inline"
+            right.id = "right"
             right.style.userSelect = "none"
             right.innerText = ">"
             frame.append(right)
 
             let left = document.createElement("h3")
-            left.style.display = "inline"
-            left.style.userSelect = "none"
             left.innerText = "<"
-            left.style.visibility = "hidden"
-            left.style.position = "absolute"
+            left.style.userSelect = "none"
+            left.id = "left"
             frame.insertBefore(left, iframe)
 
             right.addEventListener("click", () => {
@@ -60,6 +56,10 @@ async function getTrailers(frame) {
             })
         }
     }
+    else {
+        frame.remove()
+        items["description"].style.margin = 0
+    }
 }
 
 async function deletediv(){
@@ -71,9 +71,10 @@ async function deletediv(){
 async function createDetails() {
     const items = {
         title: document.createElement("h2"),
+        website: document.createElement("h4"),
         description: document.createElement("h3"),
         trailer:  document.createElement("div"),
-        budget: document.createElement("h4"),
+        income: document.createElement("div"),
         popularity: document.createElement("h4"),
         release: document.createElement("h4"),
         duration: document.createElement("h4"),
@@ -96,11 +97,28 @@ async function createDetails() {
     }))
 
     if (info) {
-        info = info.data 
-        items["budget"].innerHTML = `Budget <br> <br>\$${info.budget}`
-        items["title"].innerHTML = `${info.title}`
+        info = info.data
+        console.log(info)
+        items["website"].innerHTML = `<a target=_blank href=${info.homepage}>Website</a>`
+        items["income"].innerHTML = `
+        <div>
+            <h4>Budget</h4>
+            <h4>\$${info.budget}</h4>
+        </div>
+        <div>
+            <h4>Revenue</h4>
+            <h4>\$${info.revenue}</h4>
+        </div>
+        <div>
+            <h4>Net</h4>
+            <h4>${info.revenue - info.budget < 0 ? "-$" + Math.abs(info.revenue - info.budget) : "$" + (info.revenue - info.budget)}</>
+        </div>
+        `
+        items["income"].id = "income"
+        items["title"].innerHTML = `<a target=_blank href="https://www.themoviedb.org/movie/${movieid}">${info.title}</a>`
         items["description"].innerHTML = `${info.overview}`
         items["popularity"].innerHTML = `Popularity <br> <br> ${Math.floor(info.popularity)} / 100`
+        items["popularity"].style.margin = "0"
         items["release"].innerHTML = `Released <br> <br> ${info.release_date}`
         items["duration"].innerHTML = `Duration <br> <br> ${info.runtime} mins`
 
@@ -120,7 +138,7 @@ async function createDetails() {
 
         console.log(info)    
 
-        getTrailers(items["trailer"])
+        getTrailers(items)
     }
 }
 
