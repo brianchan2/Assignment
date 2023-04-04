@@ -56,3 +56,18 @@ button {
   width: auto;
   align-items: center;
 }
+
+#description {
+  width: 60%
+}
+
+#poster {
+  width: 90px;
+  margin-left: auto;
+  margin-right: 30px;
+  aspect-ratio: 1 / 1.5;
+}
+
+#info {
+  display: flex
+}

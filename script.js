@@ -4,17 +4,9 @@ let movieid = 550
 
 let select = document.querySelector("select")
 
-async function getTrailers(items) {
+async function getTrailers(items, videos) {
     let frame = items["trailer"]
-    let videos = await axios({
-        url: `https://api.themoviedb.org/3/movie/${movieid}/videos`,
-        params: {
-            api_key: API_KEY
-        }
-    }).catch(err => {
-        console.log(err)
-    })
-    let trailer = videos.data.results.filter(video => video.type == "Trailer")
+    let trailer = videos.results.filter(video => video.type == "Trailer")
     let current = 0
     frame.id = "frame"
     if (trailer.length) {
@@ -58,7 +50,6 @@ async function getTrailers(items) {
     }
     else {
         frame.remove()
-        items["description"].style.margin = 0
     }
 }
 
@@ -70,9 +61,7 @@ async function deletediv(){
 
 async function createDetails() {
     const items = {
-        title: document.createElement("h2"),
-        website: document.createElement("h4"),
-        description: document.createElement("h3"),
+        title: document.createElement("div"),
         trailer:  document.createElement("div"),
         income: document.createElement("div"),
         popularity: document.createElement("h4"),
@@ -90,16 +79,17 @@ async function createDetails() {
         method: "GET",
         url: `https://api.themoviedb.org/3/movie/${movieid}`,
         params: {
-            api_key: API_KEY
+            api_key: API_KEY,
+            append_to_response: "videos"
         }
     }).catch(err => {
         console.log(err)
     }))
 
+    console.log(info)
+
     if (info) {
         info = info.data
-        console.log(info)
-        items["website"].innerHTML = `<a target=_blank href=${info.homepage}>Website</a>`
         items["income"].innerHTML = `
         <div>
             <h4>Budget</h4>
@@ -115,8 +105,18 @@ async function createDetails() {
         </div>
         `
         items["income"].id = "income"
-        items["title"].innerHTML = `<a target=_blank href="https://www.themoviedb.org/movie/${movieid}">${info.title}</a>`
-        items["description"].innerHTML = `${info.overview}`
+        items["title"].innerHTML = `
+        <a target=_blank href="https://www.themoviedb.org/movie/${movieid}"><h3>${info.title}</h3></a>
+        <a target=_blank href=${info.homepage}><h4>Website</h4></a>
+        <div id="info">
+            <h3 id="description">${info.overview}</h3>
+            <img id="poster" src="https://image.tmdb.org/t/p/original/${info.poster_path}"></img>
+        </div>
+        `
+
+        if(document.querySelector("#website") && !info.homepage) {
+            document.querySelector("#wesbite").remove()
+        }
         items["popularity"].innerHTML = `Popularity <br> <br> ${Math.floor(info.popularity)} / 100`
         items["popularity"].style.margin = "0"
         items["release"].innerHTML = `Released <br> <br> ${info.release_date}`
@@ -136,9 +136,7 @@ async function createDetails() {
             }
         }
 
-        console.log(info)    
-
-        getTrailers(items)
+        getTrailers(items, info.videos)
     }
 }
 
