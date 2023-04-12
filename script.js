@@ -64,6 +64,7 @@ async function createDetails() {
     trailer: document.createElement("div"),
     income: document.createElement("div"),
     popularity: document.createElement("h4"),
+    rating: document.createElement("h4"),
     release: document.createElement("h4"),
     duration: document.createElement("h4"),
     genres: document.createElement("div"),
@@ -123,7 +124,10 @@ async function createDetails() {
     }
     items["popularity"].innerHTML = `Popularity <br> <br> ${Math.floor(
       info.popularity
-    )} / 100`;
+    )}`;
+    items["rating"].innerHTML = `Rating <br> <br> ${Math.round(
+        info.vote_average * 10
+      )} / 100`;
     items["popularity"].style.margin = "0";
     items["release"].innerHTML = `Released <br> <br> ${info.release_date}`;
     items["duration"].innerHTML = `Duration <br> <br> ${info.runtime} mins`;
