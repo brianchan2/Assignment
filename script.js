@@ -27,18 +27,24 @@ async function getTrailers(items, videos) {
       left.id = "left";
       frame.insertBefore(left, iframe);
 
+      console.log(trailer)
+
       right.addEventListener("click", () => {
-        current += 1;
+        current = current >= trailer.length - 1 ? trailer.length - 1 : current + 1;
         iframe.src = `https://www.youtube.com/embed/${trailer[current].key}`;
+        
         if (current == trailer.length - 1) {
           right.style.visibility = "hidden";
           left.style.visibility = "visible";
           left.style.position = "relative";
         }
+
+        console.log(current)
+
       });
 
       left.addEventListener("click", () => {
-        current -= 1;
+        current = current >= 0 ? 0 : current - 1;
         iframe.src = `https://www.youtube.com/embed/${trailer[current].key}`;
         if (current == 0) {
           left.style.visibility = "hidden";
