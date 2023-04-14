@@ -61,7 +61,7 @@ button {
 }
 
 #description {
-  width: 60%
+  width: 60%;
 }
 
 #poster {
@@ -81,5 +81,5 @@ button {
 }
 
 #info {
-  display: flex
+  display: flex;
 }
