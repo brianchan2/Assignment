@@ -27,8 +27,6 @@ async function getTrailers(items, videos) {
       left.id = "left";
       frame.insertBefore(left, iframe);
 
-      console.log(trailer);
-
       right.addEventListener("click", () => {
         current =
           current >= trailer.length - 1 ? trailer.length - 1 : current + 1;
@@ -48,7 +46,6 @@ async function getTrailers(items, videos) {
 
       left.addEventListener("click", () => {
         current = current >= 0 ? current - 1 : 0;
-        console.log(current);
         iframe.src = `https://www.youtube.com/embed/${trailer[current].key}`;
         if (current == 0) {
           left.style.visibility = "hidden";
@@ -86,7 +83,6 @@ async function createDetails() {
   };
 
   for (let item in items) {
-    console.log("Appended?");
     movieInfo.appendChild(items[item]);
   }
 
@@ -100,8 +96,6 @@ async function createDetails() {
   }).catch((err) => {
     console.log(err);
   });
-
-  console.log(info);
 
   if (info) {
     info = info.data;
@@ -157,7 +151,6 @@ async function createDetails() {
           element.innerText = tag.name;
           element.className = "tag";
           items["genres"].appendChild(element);
-          console.log("Created");
         }
       }
 
@@ -171,7 +164,6 @@ async function createDetails() {
           element.innerText = tag.name;
           element.className = "tag";
           items["language"].appendChild(element);
-          console.log("Created");
         }
       }
     }
