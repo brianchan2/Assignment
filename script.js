@@ -1,5 +1,5 @@
 let movieInfo = document.querySelector("#movie");
-const API_KEY = "41d720cb66a9e8c5a0107c33dc1b4f32";
+import {API_KEY} from "./config.js"
 let movieid = 550;
 
 let select = document.querySelector("select");
