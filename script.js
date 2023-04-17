@@ -70,6 +70,8 @@ async function deletediv() {
 }
 
 async function createDetails() {
+  movieid = select.value;
+  deletediv();
   const items = {
     title: document.createElement("div"),
     trailer: document.createElement("div"),
@@ -120,7 +122,7 @@ async function createDetails() {
     items["income"].id = "income";
     items["title"].innerHTML = `
         <a target=_blank href="https://www.themoviedb.org/movie/${movieid}"><h3>${info.title}</h3></a>
-        <a target=_blank href=${info.homepage}><h4>Website</h4></a>
+        <a id="website" target=_blank href=${info.homepage}><h4>Website</h4></a>
         <div id="info">
             <h3 id="description">${info.overview}</h3>
             <img id="poster" src="https://image.tmdb.org/t/p/original/${info.poster_path}"></img>
@@ -128,7 +130,7 @@ async function createDetails() {
         `;
 
     if (document.querySelector("#website") && !info.homepage) {
-      document.querySelector("#wesbite").remove();
+      document.querySelector("#website").remove()
     }
     items["popularity"].innerHTML = `Popularity <br> <br> ${Math.floor(
       info.popularity
@@ -172,14 +174,6 @@ async function createDetails() {
   }
 }
 
-select.addEventListener("change", () => {
-  movieid = select.value;
-  deletediv();
-  createDetails();
-});
+select.addEventListener("change", createDetails)
 
-document.querySelector("button").addEventListener("click", () => {
-  movieid = select.value;
-  deletediv();
-  createDetails();
-});
+document.querySelector("button").addEventListener("click", createDetails);
