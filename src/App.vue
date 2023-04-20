@@ -5,6 +5,9 @@ import Selector from "./components/Selector.vue";
 
 <template>
   <Selector />
+  <div id="top-nav">
+    <h1>Movies</h1>
+  </div>
   <Movie />
 </template>
 
