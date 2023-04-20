@@ -1,6 +1,6 @@
 let movieInfo = document.querySelector("#movie");
 import {API_KEY} from "./config.js"
-let movieid = 550;
+let movieId = 550;
 
 let select = document.querySelector("select");
 
@@ -70,7 +70,7 @@ async function deletediv() {
 }
 
 async function createDetails() {
-  movieid = select.value;
+  movieId = select.value;
   deletediv();
   const items = {
     title: document.createElement("div"),
@@ -90,7 +90,7 @@ async function createDetails() {
 
   let info = await axios({
     method: "GET",
-    url: `https://api.themoviedb.org/3/movie/${movieid}`,
+    url: `https://api.themoviedb.org/3/movie/${movieId}`,
     params: {
       api_key: API_KEY,
       append_to_response: "videos",
@@ -121,7 +121,7 @@ async function createDetails() {
         `;
     items["income"].id = "income";
     items["title"].innerHTML = `
-        <a target=_blank href="https://www.themoviedb.org/movie/${movieid}"><h3>${info.title}</h3></a>
+        <a target=_blank href="https://www.themoviedb.org/movie/${movieId}"><h3>${info.title}</h3></a>
         <a id="website" target=_blank href=${info.homepage}><h4>Website</h4></a>
         <div id="info">
             <h3 id="description">${info.overview}</h3>
