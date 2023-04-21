@@ -3,66 +3,57 @@ import { ref } from "vue";
 import axios from "axios";
 import { API_KEY } from "../config.js";
 
-const items = {
-  title: ref(),
-  trailer: ref(),
-  income: ref(),
-  genres: ref(),
-  popular: ref(),
-  rating: ref(),
-  release: ref(),
-  duration: ref(),
-  budget: ref(),
-  revenue: ref(),
-};
+const items = ref({
+  title: "",
+  trailer: "",
+  income: "",
+  genres: "",
+  popular: "",
+  poster: "",
+  rating: "",
+  release: "",
+  duration: "",
+  budget: "",
+  revenue: "",
+}).value;
 
 const isTrailer = ref();
 let movieId = 550;
+let trailers = [];
 isTrailer.value = false;
 
-async function getTrailers(videos) {
-  let trailer = videos.results.filter((video) => video.type == "Trailer");
+async function movieClick(event) {
+  let elementType = event.srcElement.id;
   let current = 0;
-  if (trailer.length) {
-    let iframe = document.getElementById("movie");
-    iframe.src = `https://www.youtube.com/embed/${trailer[0].key}`;
-    iframe.style.display = "inline";
-    if (trailer.length > 1) {
-      let left = document.querySelector("#left");
-      let right = document.querySelector("#right");
+  if (elementType == "right") {
+    current = current >= trailers.length - 1 ? trailers.length - 1 : current + 1;
+    items.trailer = `https://www.youtube.com/embed/${trailers[current].key}`;
 
-      right.addEventListener("click", () => {
-        current = current >= trailer.length - 1 ? trailer.length - 1 : current + 1;
-        iframe.src = `https://www.youtube.com/embed/${trailer[current].key}`;
-
-        if (current == trailer.length - 1) {
-          right.style.visibility = "hidden";
-          left.style.visibility = "visible";
-          left.style.position = "relative";
-        }
-
-        if (current < trailer.length - 1) {
-          left.style.visibility = "visible";
-          left.style.position = "relative";
-        }
-      });
-
-      left.addEventListener("click", () => {
-        current = current >= 0 ? current - 1 : 0;
-        iframe.src = `https://www.youtube.com/embed/${trailer[current].key}`;
-        if (current == 0) {
-          left.style.visibility = "hidden";
-          left.style.position = "absolute";
-          right.style.visibility = "visible";
-        }
-
-        if (current > 0) {
-          right.style.visibility = "visible";
-        }
-      });
+    if (current == trailers.length - 1) {
+      right.style.visibility = "hidden";
+      left.style.visibility = "visible";
+      left.style.position = "relative";
     }
-  } else {
-    frame.remove();
+
+    if (current < trailers.length - 1) {
+      left.style.visibility = "visible";
+      left.style.position = "relative";
+    }
+  }
+
+  if (elementType == "left") {
+    current = current > 0 ? current - 1 : 0;
+    console.log(current);
+    items.trailer = `https://www.youtube.com/embed/${trailers[current].key}`;
+    if (current == 0) {
+      left.style.visibility = "hidden";
+      left.style.position = "absolute";
+      right.style.visibility = "visible";
+    }
+
+    if (current > 0) {
+      right.style.visibility = "visible";
+    }
   }
 }
 
@@ -81,17 +72,25 @@ async function createDetails() {
   console.log(info);
   if (info) {
     info = info.data;
-    items.title.value = info.title;
-    items.trailer.value = info.videos;
-    items.duration.value = info.duration;
-    items.genres.value = info.genres;
-    items.rating.value = info.vote_average;
-    items.popular.value = info.popularity;
-    items.revenue.value = info.revenue;
-    items.budget.value = info.budget;
+    console.log(info);
+    items.title = info.title;
+    items.trailer = info.videos;
+    items.description = info.overview;
+    items.duration = info.duration;
+    items.genres = info.genres;
+    items.rating = info.vote_average;
+    items.popular = info.popularity;
+    items.revenue = info.revenue;
+    items.release = info.release_date;
+    items.duration = info.runtime;
+    items.poster = "https://image.tmdb.org/t/p/original" + info.poster_path;
+    items.budget = info.budget;
+    trailers = info.videos.results.filter((video) => video.type == "Trailer");
+    if (trailers && trailers.length >= 1) {
+      items.trailer = `https://www.youtube.com/embed/${trailers[0].key}`;
+      isTrailer.value = true;
+    }
   }
-
-  console.log(items["title"].value);
 }
 
 createDetails();
@@ -99,44 +98,53 @@ createDetails();
 
 <template>
   <div id="movie">
-    <h3 id="title">{{ items.title.value }}</h3>
+    <h3 id="title">{{ items.title }}</h3>
+    <h3 id="description">{{ items.description }}</h3>
+    <img id="poster" :src="items.poster" />
     <div id="trailer" v-if="isTrailer">
-      <h3 id="left">&lt</h3>
-      <iframe id="movie"> </iframe>
-      <h3 id="right">></h3>
+      <h3 id="left" @click="movieClick($event)">&lt</h3>
+      <iframe id="movie" :src="items.trailer"> </iframe>
+      <h3 id="right" @click="movieClick($event)">></h3>
     </div>
     <div id="income">
       <div>
         <h4>Budget</h4>
-        <h4>{{ "$" + items.budget.value }}</h4>
+        <h4>{{ "$" + items.budget }}</h4>
       </div>
       <div>
         <h4>Revenue</h4>
-        <h4>{{ "$" + items.revenue.value }}</h4>
+        <h4>{{ "$" + items.revenue }}</h4>
       </div>
       <div>
         <h4>Net</h4>
         <h4>
           {{
-            items.revenue.value - items.budget.value < 0
-              ? "-$" + Math.abs(items.revenue.value - items.budget.value)
-              : "$" + (items.revenue.value - items.budget.value)
+            items.revenue - items.budget < 0
+              ? "-$" + Math.abs(items.revenue - items.budget)
+              : "$" + (items.revenue - items.budget)
           }}
         </h4>
       </div>
     </div>
     <div id="popularity">
-      <h3>Popularity</h3>
-      <h3>{{ Math.round(items["popular"].value) }}</h3>
+      <h4>Popularity</h4>
+      <h4>{{ Math.round(items["popular"]) }}</h4>
     </div>
     <div id="rating">
-      <h3>Rating</h3>
-      <h3>{{ `${Math.round(items["rating"].value)} / 10` }}</h3>
+      <h4>Rating</h4>
+      <h4>{{ `${Math.round(items["rating"] * 10)} / 100` }}</h4>
     </div>
-    <h4 id="release"></h4>
-    <h4 id="duration"></h4>
-    <div id="genres" v-for="genre of items.genres.value">
-      <h5 class="tag">{{ genre.name }}</h5>
+    <div id="release">
+      <h4>Rating</h4>
+      <h4>{{ items.release }}</h4>
+    </div>
+    <div>
+      <h4>Duration</h4>
+      <h4 id="duration">{{ items.duration + " mins" }}</h4>
+    </div>
+    <div id="genres">
+      <h4>Genres</h4>
+      <h5 class="tag" v-for="genre of items.genres">{{ genre.name }}</h5>
     </div>
     <div id="langauge"></div>
   </div>
@@ -155,12 +163,6 @@ createDetails();
   display: inline;
 }
 
-#genres {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
 #income {
   display: flex;
   align-items: center;
@@ -168,12 +170,16 @@ createDetails();
   flex-direction: row;
 }
 
+#description {
+  width: 60%;
+}
+
 .tag {
   background-color: grey;
   width: fit-content;
   padding: 0.5rem;
   border-radius: 0.2rem;
-  margin: 0.1rem;
+  margin-right: 0.1rem;
   display: inline;
 }
 </style>
