@@ -45,7 +45,7 @@ async function getTrailers(items, videos) {
       });
 
       left.addEventListener("click", () => {
-        current = current >= 0 ? current - 1 : 0;
+        current = current > 0 ? current - 1 : 0;
         iframe.src = `https://www.youtube.com/embed/${trailer[current].key}`;
         if (current == 0) {
           left.style.visibility = "hidden";
