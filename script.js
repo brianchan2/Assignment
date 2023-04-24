@@ -1,5 +1,5 @@
 let movieInfo = document.querySelector("#movie");
-import {API_KEY} from "./config.js"
+import { API_KEY } from "./config.js";
 let movieId = 550;
 
 let select = document.querySelector("select");
@@ -130,7 +130,7 @@ async function createDetails() {
         `;
 
     if (document.querySelector("#website") && !info.homepage) {
-      document.querySelector("#website").remove()
+      document.querySelector("#website").remove();
     }
     items["popularity"].innerHTML = `Popularity <br> <br> ${Math.floor(
       info.popularity
@@ -174,6 +174,6 @@ async function createDetails() {
   }
 }
 
-select.addEventListener("change", createDetails)
+select.addEventListener("change", createDetails);
 
 document.querySelector("button").addEventListener("click", createDetails);
