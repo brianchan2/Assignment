@@ -3,19 +3,7 @@ import { ref } from "vue";
 import axios from "axios";
 import { API_KEY } from "../config.js";
 
-const items = ref({
-  title: "",
-  trailer: "",
-  income: "",
-  genres: "",
-  popular: "",
-  poster: "",
-  rating: "",
-  release: "",
-  duration: "",
-  budget: "",
-  revenue: "",
-}).value;
+const items = ref("");
 
 const isTrailer = ref();
 let movieId = 550;
@@ -27,7 +15,7 @@ async function movieClick(event) {
   let current = 0;
   if (elementType == "right") {
     current = current >= trailers.length - 1 ? trailers.length - 1 : current + 1;
-    items.trailer = `https://www.youtube.com/embed/${trailers[current].key}`;
+    items.value.trailer = `https://www.youtube.com/embed/${trailers[current].key}`;
 
     if (current == trailers.length - 1) {
       right.style.visibility = "hidden";
@@ -43,8 +31,7 @@ async function movieClick(event) {
 
   if (elementType == "left") {
     current = current > 0 ? current - 1 : 0;
-    console.log(current);
-    items.trailer = `https://www.youtube.com/embed/${trailers[current].key}`;
+    items.value.trailer = `https://www.youtube.com/embed/${trailers[current].key}`;
     if (current == 0) {
       left.style.visibility = "hidden";
       left.style.position = "absolute";
@@ -72,23 +59,14 @@ async function createDetails() {
   console.log(info);
   if (info) {
     info = info.data;
-    console.log(info);
-    items.title = info.title;
-    items.trailer = info.videos;
-    items.description = info.overview;
-    items.duration = info.duration;
-    items.genres = info.genres;
-    items.rating = info.vote_average;
-    items.popular = info.popularity;
-    items.revenue = info.revenue;
-    items.release = info.release_date;
-    items.duration = info.runtime;
-    items.poster = "https://image.tmdb.org/t/p/original" + info.poster_path;
+    items.value = info;
+
     items.budget = info.budget;
     trailers = info.videos.results.filter((video) => video.type == "Trailer");
     if (trailers && trailers.length >= 1) {
-      items.trailer = `https://www.youtube.com/embed/${trailers[0].key}`;
+      items.value.trailer = `https://www.youtube.com/embed/${trailers[0].key}`;
       isTrailer.value = true;
+      console.log(items.trailer);
     }
   }
 }
@@ -99,11 +77,11 @@ createDetails();
 <template>
   <div id="movie">
     <h3 id="title">{{ items.title }}</h3>
-    <h3 id="description">{{ items.description }}</h3>
-    <img id="poster" :src="items.poster" />
+    <h3 id="description">{{ items.overview }}</h3>
+    <img id="poster" :src="`https://image.tmdb.org/t/p/original${items.poster_path}`" />
     <div id="trailer" v-if="isTrailer">
       <h3 id="left" @click="movieClick($event)">&lt</h3>
-      <iframe id="movie" :src="items.trailer"> </iframe>
+      <iframe id="movie" :src="items.trailer"></iframe>
       <h3 id="right" @click="movieClick($event)">></h3>
     </div>
     <div id="income">
@@ -128,19 +106,19 @@ createDetails();
     </div>
     <div id="popularity">
       <h4>Popularity</h4>
-      <h4>{{ Math.round(items["popular"]) }}</h4>
+      <h4>{{ Math.round(items["popularity"]) }}</h4>
     </div>
     <div id="rating">
       <h4>Rating</h4>
-      <h4>{{ `${Math.round(items["rating"] * 10)} / 100` }}</h4>
+      <h4>{{ `${Math.round(items["vote_average"] * 10)} / 100` }}</h4>
     </div>
     <div id="release">
-      <h4>Rating</h4>
-      <h4>{{ items.release }}</h4>
+      <h4>Release Date</h4>
+      <h4>{{ items.release_date }}</h4>
     </div>
     <div>
       <h4>Duration</h4>
-      <h4 id="duration">{{ items.duration + " mins" }}</h4>
+      <h4 id="duration">{{ items.runtime + " mins" }}</h4>
     </div>
     <div id="genres">
       <h4>Genres</h4>
