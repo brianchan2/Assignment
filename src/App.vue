@@ -1,18 +1,21 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
-import { API_KEY } from "./config.js";
+let API_KEY = import.meta.env.VITE_API_KEY;
+
+console.log(API_KEY);
 
 const items = ref("");
 
 const isTrailer = ref();
 let movieId = 550;
+let current = 0;
 let trailers = [];
 isTrailer.value = false;
 
 async function movieClick(event) {
   let elementType = event.srcElement.id;
-  let current = 0;
+  console.log(trailers, current);
   if (elementType == "right") {
     current = current >= trailers.length - 1 ? trailers.length - 1 : current + 1;
     items.value.trailer = `https://www.youtube.com/embed/${trailers[current].key}`;
@@ -64,17 +67,26 @@ async function createDetails() {
     items.budget = info.budget;
     trailers = info.videos.results.filter((video) => video.type == "Trailer");
     if (trailers && trailers.length >= 1) {
+      if (current > 0) {
+        current = 0;
+        left.style.visibility = "hidden";
+        left.style.position = "absolute";
+        right.style.visibility = "visible";
+      }
       items.value.trailer = `https://www.youtube.com/embed/${trailers[0].key}`;
       isTrailer.value = true;
       console.log(items.trailer);
+    } else {
+      isTrailer.value = false;
     }
   }
 }
+
+createDetails();
 </script>
 
 <template>
-  <select selected v-model="movieId" @change="createDetails">
-    <option value="" selected hidden></option>
+  <select v-model="movieId" @change="createDetails">
     <option value="550">Fight Club</option>
     <option value="551">The Poseidon Adventure</option>
     <option value="552">Bread and Tulips</option>
