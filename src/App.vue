@@ -153,8 +153,21 @@ createDetails();
 </template>
 
 <style>
+* {
+  color: white;
+  font-family: sans-serif;
+}
+
 body {
   background-color: black;
+}
+
+select {
+  background-color: black;
+}
+
+button {
+  background-color: grey;
 }
 
 #trailer {
@@ -167,19 +180,6 @@ body {
 }
 #left {
   display: inline;
-}
-
-* {
-  color: white;
-  font-family: sans-serif;
-}
-
-select {
-  background-color: black;
-}
-
-button {
-  background-color: grey;
 }
 
 #top-nav {
