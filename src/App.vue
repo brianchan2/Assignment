@@ -152,7 +152,11 @@ createDetails();
   </div>
 </template>
 
-<style scoped>
+<style>
+body {
+  background-color: black;
+}
+
 #trailer {
   display: flex;
   align-items: center;
@@ -163,6 +167,79 @@ createDetails();
 }
 #left {
   display: inline;
+}
+
+* {
+  color: white;
+  font-family: sans-serif;
+}
+
+select {
+  background-color: black;
+}
+
+button {
+  background-color: grey;
+}
+
+#top-nav {
+  color: white;
+  text-align: center;
+  font-family: sans-serif;
+  margin: 0;
+}
+
+#frame {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  position: absolute;
+  right: 0px;
+  bottom: 20rem;
+}
+
+#right {
+  display: "inline";
+}
+
+#left {
+  display: "inline";
+  visibility: hidden;
+  position: absolute;
+}
+
+#income {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  height: auto;
+  width: auto;
+  align-items: center;
+}
+
+#description {
+  width: 60%;
+}
+
+#poster {
+  top: 15%;
+  position: absolute;
+  width: 10%;
+  margin-left: 85%;
+  margin-right: 1%;
+}
+
+#cast {
+  position: absolute;
+  overflow-x: hidden;
+  width: 25%;
+  right: 2rem;
+  top: 25rem;
+}
+
+#info {
+  display: flex;
 }
 
 #income {
