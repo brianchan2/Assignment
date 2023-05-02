@@ -148,7 +148,10 @@ createDetails();
       <h4>Genres</h4>
       <h5 class="tag" v-for="genre of items.genres">{{ genre.name }}</h5>
     </div>
-    <div id="langauge"></div>
+    <div id="langauge">
+      <h4>Genres</h4>
+      <h5 class="tag" v-for="language of items.spoken_languages">{{ language.name }}</h5>
+    </div>
   </div>
 </template>
 
