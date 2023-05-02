@@ -3,8 +3,6 @@ import { ref } from "vue";
 import axios from "axios";
 let API_KEY = import.meta.env.VITE_API_KEY;
 
-console.log(API_KEY);
-
 const items = ref("");
 
 const isTrailer = ref();
