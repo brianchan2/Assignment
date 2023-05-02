@@ -17,7 +17,8 @@ async function movieClick(event) {
   let elementType = event.srcElement.id;
   console.log(trailers, current);
   if (elementType == "right") {
-    current = current >= trailers.length - 1 ? trailers.length - 1 : current + 1;
+    current =
+      current >= trailers.length - 1 ? trailers.length - 1 : current + 1;
     items.value.trailer = `https://www.youtube.com/embed/${trailers[current].key}`;
 
     if (current == trailers.length - 1) {
@@ -102,7 +103,10 @@ createDetails();
   <div id="movie" v-if="items">
     <h3 id="title">{{ items.title }}</h3>
     <h3 id="description">{{ items.overview }}</h3>
-    <img id="poster" :src="`https://image.tmdb.org/t/p/original${items.poster_path}`" />
+    <img
+      id="poster"
+      :src="`https://image.tmdb.org/t/p/original${items.poster_path}`"
+    />
     <div id="trailer" v-if="isTrailer">
       <h3 id="left" @click="movieClick($event)">&lt</h3>
       <iframe id="movie" :src="items.trailer"></iframe>
@@ -150,7 +154,9 @@ createDetails();
     </div>
     <div id="langauge">
       <h4>Genres</h4>
-      <h5 class="tag" v-for="language of items.spoken_languages">{{ language.name }}</h5>
+      <h5 class="tag" v-for="language of items.spoken_languages">
+        {{ language.name }}
+      </h5>
     </div>
   </div>
 </template>
