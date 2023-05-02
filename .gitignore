@@ -20,6 +20,9 @@ coverage
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+# *firebase*
+# *firestore*
+firebase.rules
 .idea
 *.suo
 *.ntvs*
