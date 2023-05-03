@@ -6,17 +6,15 @@ let API_KEY = import.meta.env.VITE_API_KEY;
 const items = ref("");
 
 const isTrailer = ref();
-let movieId = 550;
+let movieId = 0;
 let current = 0;
-let trailers = [];
 isTrailer.value = false;
 
 async function movieClick(event) {
   let elementType = event.srcElement.id;
-  console.log(trailers, current);
+  let trailers = items.value.trailers;
   if (elementType == "right") {
-    current =
-      current >= trailers.length - 1 ? trailers.length - 1 : current + 1;
+    current = current >= trailers.length - 1 ? trailers.length - 1 : current + 1;
     items.value.trailer = `https://www.youtube.com/embed/${trailers[current].key}`;
 
     if (current == trailers.length - 1) {
@@ -64,28 +62,26 @@ async function createDetails() {
     items.value = info;
 
     items.budget = info.budget;
-    trailers = info.videos.results.filter((video) => video.type == "Trailer");
-    if (trailers && trailers.length >= 1) {
+    items.value.trailers = info.videos.results.filter((video) => video.type == "Trailer");
+    if (items.value.trailers && items.value.trailers.length >= 1) {
       if (current > 0) {
         current = 0;
         left.style.visibility = "hidden";
         left.style.position = "absolute";
         right.style.visibility = "visible";
       }
-      items.value.trailer = `https://www.youtube.com/embed/${trailers[0].key}`;
+      items.value.trailer = `https://www.youtube.com/embed/${items.value.trailers[0].key}`;
       isTrailer.value = true;
-      console.log(items.trailer);
     } else {
       isTrailer.value = false;
     }
   }
 }
-
-createDetails();
 </script>
 
 <template>
   <select v-model="movieId" @change="createDetails">
+    <option hidden value="0">Select a movie</option>
     <option value="550">Fight Club</option>
     <option value="551">The Poseidon Adventure</option>
     <option value="552">Bread and Tulips</option>
@@ -97,18 +93,16 @@ createDetails();
     <option value="559">Spider-Man 3</option>
     <option value="361743">Top Gun: Maverick</option>
   </select>
-  <button>GET</button>
   <div id="movie" v-if="items">
-    <h3 id="title">{{ items.title }}</h3>
+    <a :href="`https://www.themoviedb.org/movie/${items.id}`" target="_blank"
+      ><h3 id="title">{{ items.title }}</h3>
+    </a>
     <h3 id="description">{{ items.overview }}</h3>
-    <img
-      id="poster"
-      :src="`https://image.tmdb.org/t/p/original${items.poster_path}`"
-    />
-    <div id="trailer" v-if="isTrailer">
+    <img id="poster" :src="`https://image.tmdb.org/t/p/original${items.poster_path}`" />
+    <div id="trailer" v-if="items.trailer">
       <h3 id="left" @click="movieClick($event)">&lt</h3>
       <iframe id="movie" :src="items.trailer"></iframe>
-      <h3 id="right" @click="movieClick($event)">></h3>
+      <h3 id="right" v-if="items.trailers.length > 1" @click="movieClick($event)">></h3>
     </div>
     <div id="income">
       <div>
@@ -181,12 +175,19 @@ button {
   display: flex;
   align-items: center;
   gap: 5px;
+  position: absolute;
+  right: 0px;
+  bottom: 20rem;
+  user-select: none;
 }
+
 #right {
   display: inline;
+  cursor: pointer;
 }
 #left {
   display: inline;
+  cursor: pointer;
 }
 
 #top-nav {
