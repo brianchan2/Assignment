@@ -185,6 +185,7 @@ button {
   display: inline;
   cursor: pointer;
 }
+
 #left {
   display: inline;
   cursor: pointer;
@@ -272,6 +273,7 @@ select {
   border-radius: 5px;
   margin-right: 10px;
 }
+
 .tag {
   background-color: grey;
   width: fit-content;
