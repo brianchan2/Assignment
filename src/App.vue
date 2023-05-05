@@ -1,18 +1,18 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
-let API_KEY = import.meta.env.VITE_API_KEY;
 
+const API_KEY = import.meta.env.VITE_API_KEY;
 const items = ref("");
+const isTrailer = ref(false);
 
-const isTrailer = ref();
 let movieId = 0;
 let current = 0;
-isTrailer.value = false;
 
 async function movieClick(event) {
   let elementType = event.srcElement.id;
   let trailers = items.value.trailers;
+
   if (elementType == "right") {
     current = current >= trailers.length - 1 ? trailers.length - 1 : current + 1;
     items.value.trailer = `https://www.youtube.com/embed/${trailers[current].key}`;
@@ -60,9 +60,9 @@ async function createDetails() {
   if (info) {
     info = info.data;
     items.value = info;
-
     items.budget = info.budget;
     items.value.trailers = info.videos.results.filter((video) => video.type == "Trailer");
+
     if (items.value.trailers && items.value.trailers.length >= 1) {
       if (current > 0) {
         current = 0;
