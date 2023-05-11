@@ -4,7 +4,13 @@
 
     const moviedata = useMovieStore()
 
+    moviedata.movies.push("Ji")
+
     console.log(moviedata.movies)
+
+    if (!moviedata.movies || !(moviedata.movies.length < 0)) {
+        console.log("You are missing movie data")
+    }
 
 </script>
 
