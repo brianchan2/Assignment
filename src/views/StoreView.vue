@@ -31,7 +31,7 @@
 </script>
 
 <template>
-    <h1>Popular</h1>
+    <h1 id="title">Popular</h1>
     <div id="movies" v-if="movieData.movies">
         <div id="movie" v-for="movie in movieData.movies">
             <img :src="`https://image.tmdb.org/t/p/original${movie.poster}`" />
@@ -41,11 +41,17 @@
 </template>
 
 <style scoped>
+    #title {
+        margin: 2rem 2rem;
+    }
     #movies {
         display: flex;
         flex-direction: row;
+        justify-content: center;
         gap: 1.5vw;
         flex-wrap: wrap;
+        margin-left: 2rem;
+        margin-right: 2rem;
     }
     #movie {
         width: 166px;

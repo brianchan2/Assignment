@@ -12,8 +12,8 @@ import Header from "../components/Header.vue";
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Exercitationem,
         asperiores?
       </p>
-      <button>Browse</button>
-      <a href="./Login"><p id="prompt">New to the site? Create a new account!</p></a>
+      <a href="./store"><button>Browse</button></a>
+      <a href="./login"><p id="prompt">New to the site? Create a new account!</p></a>
     </div>
   </div>
   <footer>
