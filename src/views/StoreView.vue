@@ -15,8 +15,7 @@
             }
         }).then(movies => {
             movies.data.results.forEach(movie => {
-            movieData.movies.push({
-                    id: movie.id,
+            movieData.movies[movie.id] = ({
                     poster: movie.poster_path,
                     title: movie.title
                 })
@@ -35,7 +34,7 @@
     <div id="movies" v-if="movieData.movies">
         <div id="movie" v-for="movie in movieData.movies">
             <img :src="`https://image.tmdb.org/t/p/original${movie.poster}`" />
-            <h1>{{ movie.title }}</h1>
+            <h1>{{ movie.title }}</h1> 
         </div>
     </div>
 </template>

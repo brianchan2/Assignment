@@ -1,11 +1,15 @@
 import { defineStore } from "pinia";
 import { ref } from "vue"
 
-export const useMovieStore = defineStore("movieId", () => {
-    const data = ref({
-        movies: [],
-        cart: []
-    })
+export const useMovieStore = defineStore("movieId", {
+    state: () =>  ({
+        movies: {},
+        cart: {}
+    }),
 
-    return data.value
+    actions: ({
+        addToCart(data) {
+            this.cart.push()
+        }
+    })
 })
