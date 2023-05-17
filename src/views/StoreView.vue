@@ -5,6 +5,10 @@
     const API_KEY = import.meta.env.VITE_API_KEY;
     const movieData = useMovieStore()
 
+    function createModal() {
+        
+    }
+
     if (!movieData.movies || !(movieData.movies.length < 0)) {
         console.log("Runnning")
         axios({
