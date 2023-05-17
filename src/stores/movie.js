@@ -3,13 +3,14 @@ import { ref } from "vue"
 
 export const useMovieStore = defineStore("movieId", {
     state: () =>  ({
-        movies: {},
+        movies: [],
         cart: {}
     }),
 
     actions: ({
         addToCart(data) {
-            this.cart.push()
+            console.log(data)
+            this.cart[data.id] = data
         }
     })
 })
