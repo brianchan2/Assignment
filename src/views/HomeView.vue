@@ -1,24 +1,29 @@
 <script setup>
 import Header from "../components/Header.vue";
+import Footer from "../components/Footer.vue";
+
+import { useRouter } from "vue-router";
+
+const router = useRouter()
 
 </script>
 
 <template>
-  <Header />
-  <div id="hero">
-    <div id="content">
-      <h1>Enjoy Your Movies Anytime</h1>
-      <p id="description">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Exercitationem,
-        asperiores?
-      </p>
-      <a href="./store"><button>Browse</button></a>
-      <a href="./login"><p id="prompt">New to the site? Create a new account!</p></a>
+    <div>
+    <Header />
+    <div id="hero">
+        <div id="content">
+        <h1>Enjoy Your Movies Anytime</h1>
+        <p id="description">
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Exercitationem,
+            asperiores?
+        </p>
+        <button @click="router.push('/store')">Browse</button>
+        <a href="./login"><p id="prompt">New to the site? Create a new account!</p></a>
+        </div>
     </div>
-  </div>
-  <footer>
-    <h1>Random Footer text</h1>
-  </footer>
+    <Footer />
+    </div>
 </template>
 
 <style scoped>
@@ -28,25 +33,25 @@ import Header from "../components/Header.vue";
   height: 200vw;
   width: 100%;
 }
-footer {
-  position: fixed;
-  width: 100%;
-  text-align: center;
-  display: flex;
-  background-color: rgb(0, 0, 0);
-  bottom: 0;
+
+Footer {
+    position: absolute;
+    bottom: 0;
 }
+
 h1 {
   display: inline;
   font-size: 2.3rem;
   font-weight: bold;
   font-family: "helvetica";
 }
+
 #hero #description {
   font-size: 1rem;
   font-weight: bold;
   font-family: "helvetica";
 }
+
 #hero button {
   border-style: none;
   margin-top: 15px;

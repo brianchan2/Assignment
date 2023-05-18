@@ -1,13 +1,13 @@
-<script async setup>
+<script setup>
     import axios from "axios"
     import { useMovieStore } from "../stores/movie.js"
-
+    import { ref } from "vue";
+    import Header from "../components/Header.vue";
+    import Footer from "../components/Footer.vue";
+    import Modal from "../components/Modal.vue"
+    
     const API_KEY = import.meta.env.VITE_API_KEY;
     const movieData = useMovieStore()
-
-    function createModal() {
-        
-    }
 
     if (!movieData.movies || !(movieData.movies.length < 0)) {
         console.log("Runnning")
@@ -35,6 +35,7 @@
 </script>
 
 <template>
+    <Header />
     <h1 id="title">Popular</h1>
     <div id="movies" v-if="movieData.movies">
         <div id="movie" v-for="movie in movieData.movies" @click="movieData.addToCart(movie)">
@@ -42,6 +43,8 @@
             <h1>{{ movie.title }}</h1> 
         </div>
     </div>
+    <Modal />
+    <Footer />
 </template>
 
 <style scoped>

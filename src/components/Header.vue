@@ -1,10 +1,13 @@
 <script setup>
+import { useRouter } from "vue-router"
+
+const router = useRouter()
 
 </script>
 
 <template>
     <header>
-        <img src="https://www.jobalign.com/wp-content/uploads/2017/07/Icon-Placeholder-1.png">
+        <img src="https://www.jobalign.com/wp-content/uploads/2017/07/Icon-Placeholder-1.png" @click="router.push('/')">
         <button>Login</button>
     </header>
 </template>
