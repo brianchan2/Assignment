@@ -1,13 +1,15 @@
 <script setup>
     import axios from "axios"
     import { useMovieStore } from "../stores/movie.js"
-    import { ref } from "vue";
-    import Header from "../components/Header.vue";
-    import Footer from "../components/Footer.vue";
+    import { ref } from "vue"
+    import Header from "../components/Header.vue"
+    import Footer from "../components/Footer.vue"
     import Modal from "../components/Modal.vue"
     
     const API_KEY = import.meta.env.VITE_API_KEY;
     const movieData = useMovieStore()
+    const selected = ref()
+
 
     if (!movieData.movies || !(movieData.movies.length < 0)) {
         console.log("Runnning")
@@ -30,7 +32,13 @@
         })
     }
 
-    console.log(movieData.movies) 
+    function getDetails(movie) {
+        selected.value =  movie.id
+        console.log(selected)
+        if (selected && selected) {
+            console.log("??")
+        }
+    }
 
 </script>
 
@@ -38,13 +46,13 @@
     <Header />
     <h1 id="title">Popular</h1>
     <div id="movies" v-if="movieData.movies">
-        <div id="movie" v-for="movie in movieData.movies" @click="movieData.addToCart(movie)">
+        <div id="movie" v-for="movie in movieData.movies" @click="getDetails(movie)">
             <img :src="`https://image.tmdb.org/t/p/original${movie.poster}`" />
             <h1>{{ movie.title }}</h1> 
         </div>
     </div>
-    <Modal />
     <Footer />
+    <Modal v-if="selected" :movie="selected" />
 </template>
 
 <style scoped>
