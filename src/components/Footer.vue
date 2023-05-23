@@ -14,7 +14,6 @@
         text-align: center;
         display: flex;
         background-color: rgb(0, 0, 0);
-        position: relative;
-        bottom: 0;
+        position: absolute;
     }
 </style>

@@ -39,6 +39,7 @@ Footer {
     bottom: 0;
 }
 
+
 h1 {
   display: inline;
   font-size: 2.3rem;

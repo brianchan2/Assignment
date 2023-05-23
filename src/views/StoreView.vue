@@ -1,49 +1,58 @@
 <script setup>
-    import axios from "axios"
-    import { useMovieStore } from "../stores/movie.js"
-    import { ref } from "vue"
-    import Header from "../components/Header.vue"
-    import Footer from "../components/Footer.vue"
-    import Modal from "../components/Modal.vue"
-    
-    const API_KEY = import.meta.env.VITE_API_KEY;
-    const movieData = useMovieStore()
-    const selected = ref()
+import axios from "axios"
+import { useMovieStore } from "../stores/movie.js"
+import { ref } from "vue"
+import Header from "../components/Header.vue"
+import Footer from "../components/Footer.vue"
+import Modal from "../components/Modal.vue"
+import { useRouter } from "vue-router"
 
+const API_KEY = import.meta.env.VITE_API_KEY;
+const movieData = useMovieStore()
+const selected = ref()
+const router = useRouter()
 
-    if (!movieData.movies || !(movieData.movies.length < 0)) {
-        console.log("Runnning")
-        axios({
-            url: "https://api.themoviedb.org/3/trending/movie/week",
-            method: "GET",
-            params: {
-                api_key: API_KEY,
-            }
-        }).then(movies => {
-            movies.data.results.forEach(movie => {
-            movieData.movies.push({
-                    id: movie.id,
-                    poster: movie.poster_path,
-                    title: movie.title
-                })
-            })
-        }).catch(err => {
-            console.log(err)
-        })
-    }
+console.log(movieData.movies)
 
-    function getDetails(movie) {
-        selected.value =  movie.id
-        console.log(selected)
-        if (selected && selected) {
-            console.log("??")
+if ((!movieData.movies || (movieData.movies.length <= 0) )) {
+    console.log("Runnning")
+    axios({
+        url: "https://api.themoviedb.org/3/trending/movie/week",
+        method: "GET",
+        params: {
+            api_key: API_KEY,
         }
-    }
+    }).then(movies => {
+        movies.data.results.forEach(movie => {
+        movieData.movies.push({
+                id: movie.id,
+                poster: movie.poster_path,
+                title: movie.title
+            })
+        })
+    }).catch(err => {
+        console.log(err)
+    })
+}
+
+function getDetails(movie) {
+    selected.value =  movie.id
+}
+
+async function closeModal() {
+    console.log("working?")
+    selected.value = undefined
+}
+
+if (!movieData.loggedIn) {
+    router.push("/login")
+}
 
 </script>
 
 <template>
     <Header />
+    <img id="cart" @click="router.push(`/cart`)" src="https://static.vecteezy.com/system/resources/previews/004/999/463/original/shopping-cart-icon-illustration-free-vector.jpg"/>
     <h1 id="title">Popular</h1>
     <div id="movies" v-if="movieData.movies">
         <div id="movie" v-for="movie in movieData.movies" @click="getDetails(movie)">
@@ -52,13 +61,14 @@
         </div>
     </div>
     <Footer />
-    <Modal v-if="selected" :movie="selected" />
+    <Modal v-if="selected" :movie="selected" @toggleModal = closeModal() />
 </template>
 
 <style scoped>
     #title {
         margin: 2rem 2rem;
     }
+
     #movies {
         display: flex;
         flex-direction: row;
@@ -68,8 +78,15 @@
         margin-left: 2rem;
         margin-right: 2rem;
     }
+
     #movie {
         width: 166px;
+    }
+
+    #cart {
+        position: fixed;
+        top: 10%;
+        right: 0;
     }
 
     #movie h1 {

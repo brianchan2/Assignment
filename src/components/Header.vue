@@ -1,14 +1,16 @@
 <script setup>
 import { useRouter } from "vue-router"
+import { useMovieStore } from "../stores/movie.js"
 
 const router = useRouter()
+const data = useMovieStore()
 
 </script>
 
 <template>
     <header>
         <img src="https://www.jobalign.com/wp-content/uploads/2017/07/Icon-Placeholder-1.png" @click="router.push('/')">
-        <button>Login</button>
+        <button @click="router.push('/login')" v-if="!data.loggedIn">Login</button>
     </header>
 </template>
 

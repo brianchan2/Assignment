@@ -1,24 +1,27 @@
 <script setup>
-    import axios from "axios"
     import { useMovieStore } from "../stores/movie";
+    import Header from "../components/Header.vue"
+    import Footer from "../components/Footer.vue"
 
     const movieData = useMovieStore()
 
 </script>
 
 <template>
+    <Header />
     <div id="header">
         <h1>Your cart:</h1>
-        <h1>0 Items</h1>
+        <h1>{{ `${Object.keys(JSON.parse(JSON.stringify(movieData.cart))).length} Items` }}</h1>
     </div>
     
     <div id="movies">
-        <div id="movie" v-for="movie in movieData.cart">
-            <img :src="`https://image.tmdb.org/t/p/original${movie.poster}`" />
+        <div @click="movieData.removeFromCart(movie)" id="movie" v-for="movie in movieData.cart">
+            <h4 class="close">x</h4>
+            <img :src="`https://image.tmdb.org/t/p/original${movie.poster_path}`" />
             <h1>{{ movie.title }}</h1>
         </div>
     </div>
-    
+    <Footer />
 </template>
 
 <style scoped>
@@ -26,9 +29,26 @@
         display: flex;
         margin: 2rem;
     }
+
     #header h1:nth-child(2) {
         margin-left: auto;
         margin-right: 2rem;
+    }
+
+    .close {
+        user-select: none;
+        position: relative;
+        top: 5%;
+        left: 90%;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 100%;
+        background-color: gray;
+        text-align: center;
+    }
+
+    Footer {
+        bottom: 0;
     }
 
     #movies {

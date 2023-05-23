@@ -1,36 +1,53 @@
 <script setup>
 import axios from "axios"
 import { ref } from "vue"
+import { useMovieStore } from "../stores/movie.js"
 
 const movieId = defineProps(['movie'])
 const items = ref()
+const purchaseText = ref()
+const emits = defineEmits(["toggleModal"]);
+const movieStore = useMovieStore()
 
-async function createDetails() {
-  let info = await axios({
-    method: "GET",
-    url: `https://api.themoviedb.org/3/movie/${movieId.movie}`,
-    params: {
-      api_key: import.meta.env.VITE_API_KEY,
-      append_to_response: "videos",
-    },
-  }).catch((err) => {
-    console.log(err);
-  });
+let info = await axios({
+  method: "GET",
+  url: `https://api.themoviedb.org/3/movie/${movieId.movie}`,
+  params: {
+    api_key: import.meta.env.VITE_API_KEY,
+    append_to_response: "videos",
+  },
+}).catch((err) => {
+  console.log(err);
+});
 
-  console.log(info);
-  if (info) {
-    info = info.data;
-    items.value = info;
-    items.budget = info.budget;
-    items.value.trailer = info.videos.results.filter((video) => video.type == "Trailer")
+if (info) {
+  info = info.data;
+  items.value = info;
+  items.budget = info.budget;
+}
+
+async function addToCart() {
+  if (movieStore.cart[items.value.id]) {
+    movieStore.removeFromCart(items.value)
+    purchaseText.value = "Add to cart"
+  }
+  else {
+    movieStore.addToCart(items.value)
+    purchaseText.value = "Remove from cart"
   }
 }
 
-createDetails()
+
+if (!movieStore.cart[items.value.id] ) {
+  purchaseText.value = "Add to cart"
+}
+else {
+  purchaseText.value = "Remove from cart"
+}
 </script>
 
 <template>
-  <div id="shadow"></div>
+  <div id="shadow" @click= "emits('toggleModal')"></div>
   <div id="modal" v-if="items">
     <div id="movie">
       <a :href="`https://www.themoviedb.org/movie/${items.id}`" target="_blank">
@@ -82,6 +99,7 @@ createDetails()
         </h5>
       </div>
     </div>
+    <button id="purchase" @click="addToCart()">{{ purchaseText }}</button>
   </div>
 </template>
 
@@ -97,7 +115,7 @@ createDetails()
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1;
   top: 0;
-  position: absolute;
+  position: fixed;
 }
 
 #modal {
@@ -107,7 +125,10 @@ createDetails()
   bottom: 0;
   background-color: rgb(0, 0, 0);
   z-index: 2;
-  position: absolute;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 #movie {
@@ -130,6 +151,14 @@ h4 {
   height: auto;
   width: auto;
   align-items: center;
+}
+
+#purchase {
+  width: 5vw;
+  height: 3vh;
+  background: #343434;
+  align-self: flex-end;
+  margin-right: 2vw;
 }
 
 #description {
