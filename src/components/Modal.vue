@@ -38,7 +38,7 @@ async function addToCart() {
 }
 
 
-if (!movieStore.cart[items.value.id] ) {
+if (!movieStore.cart[items.value.id]) {
   purchaseText.value = "Add to cart"
 }
 else {
@@ -47,7 +47,7 @@ else {
 </script>
 
 <template>
-  <div id="shadow" @click= "emits('toggleModal')"></div>
+  <div id="shadow" @click="emits('toggleModal')"></div>
   <div id="modal" v-if="items">
     <div id="movie">
       <a :href="`https://www.themoviedb.org/movie/${items.id}`" target="_blank">
@@ -136,7 +136,7 @@ else {
   margin-left: 2vw;
   display: flex;
   flex-direction: column;
-  gap: 3vh;
+  gap: 2vh;
   align-items: flex-start;
 }
 

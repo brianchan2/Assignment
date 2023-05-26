@@ -9,21 +9,23 @@ const router = useRouter()
 </script>
 
 <template>
-    <div>
+  <div>
     <Header />
     <div id="hero">
-        <div id="content">
+      <div id="content">
         <h1>Enjoy Your Movies Anytime</h1>
         <p id="description">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Exercitationem,
-            asperiores?
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Exercitationem,
+          asperiores?
         </p>
         <button @click="router.push('/store')">Browse</button>
-        <a href="./login"><p id="prompt">New to the site? Create a new account!</p></a>
-        </div>
+        <a href="./login">
+          <p id="prompt">New to the site? Create a new account!</p>
+        </a>
+      </div>
     </div>
     <Footer />
-    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -35,8 +37,8 @@ const router = useRouter()
 }
 
 Footer {
-    position: absolute;
-    bottom: 0;
+  position: absolute;
+  bottom: 0;
 }
 
 
@@ -69,7 +71,7 @@ h1 {
 }
 
 #hero button:active {
-    background-color: gray;
+  background-color: gray;
 }
 
 #hero #prompt {
@@ -93,6 +95,7 @@ h1 {
   h1 {
     font-size: 3.6vw;
   }
+
   p {
     font-size: 2.6vw;
   }
@@ -102,8 +105,8 @@ h1 {
   h1 {
     font-size: 2rem;
   }
+
   p {
     font-size: 1rem;
   }
-}
-</style>
+}</style>
