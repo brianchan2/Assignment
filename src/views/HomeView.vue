@@ -12,6 +12,7 @@ const router = useRouter()
   <div>
     <Header />
     <div id="hero">
+      <img src="https://media.istockphoto.com/id/1244034031/vector/cinema-poster-with-cola-film-strip-and-clapper-vector.jpg?s=612x612&w=0&k=20&c=JN4E5qJgcq3qm89rSc2BIJT6AZ80MvRJie__r3OENY8=">
       <div id="content">
         <h1>Enjoy Your Movies Anytime</h1>
         <p id="description">
@@ -41,18 +42,29 @@ Footer {
   bottom: 0;
 }
 
+img {
+  position: absolute;
+  z-index: 0;
+  width: 100%;
+  height: 35%;
+  filter: blur(5px);
+}
 
 h1 {
   display: inline;
   font-size: 2.3rem;
   font-weight: bold;
   font-family: "helvetica";
+  z-index: 1;
+  position: relative;
 }
 
 #hero #description {
   font-size: 1rem;
   font-weight: bold;
   font-family: "helvetica";
+  z-index: 1;
+  position: relative;
 }
 
 #hero button {
@@ -64,6 +76,8 @@ h1 {
   color: black;
   font-weight: bold;
   background-color: white;
+  z-index: 1;
+  position: relative;
 }
 
 #hero button:hover {
