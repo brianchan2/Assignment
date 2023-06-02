@@ -1,29 +1,26 @@
-<script setup>
-
-</script>
+<script setup></script>
 
 <template>
   <footer>
     <div>
-        <p>Contact us</p>
-        <p>brianchan9061@gmail.com</p>
+      <p>Contact us</p>
+      <p>brianchan9061@gmail.com</p>
     </div>
     <div>
-        <p>About us</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ullam, consequatur?</p>
+      <p>About us</p>
+      <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ullam, consequatur?</p>
     </div>
-</footer>
+  </footer>
 </template>
 
 <style scoped>
-
 footer {
-    width: 100%;
-    text-align: center;
-    background-color: rgb(0, 0, 0);
-    position: absolute;
-    display: grid;
-    grid-template-rows: repeat(2,1fr);
+  width: 100%;
+  text-align: center;
+  background-color: rgb(0, 0, 0);
+  position: absolute;
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
 }
 .info {
   font-family: Arial, Helvetica, sans-serif;
