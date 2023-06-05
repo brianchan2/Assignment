@@ -1,7 +1,15 @@
 <script setup>
-import { ref } from "vue"
-import { useRouter } from "vue-router"
-import { useMovieStore } from "../stores/movie"
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useMovieStore } from "../stores/movie";
+import { auth, firestore } from "../firebase";
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { getDoc, doc } from "@firebase/firestore";
 
 const router = useRouter()
 const username = ref("")
@@ -38,7 +46,7 @@ if (data.loggedIn) {
 				<h1>Login</h1>
 				<input v-model="username" placeholder="Username" type="text">
 				<input v-model="password" placeholder="Password" type="password">
-				<button @click="checkPass()">Login</button>
+				<input type="submit" @submit.prevent="checkPass()" value="Login">
 				<h4 v-if="invalid">Invalid Credentials. Did you correctly type your credentials?</h4>
 			</div>
 		</div>
