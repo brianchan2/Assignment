@@ -1,6 +1,8 @@
 <script setup>
 import { useRouter } from "vue-router"
 import { useMovieStore } from "../stores/movie.js"
+import { signOut } from "@firebase/auth";
+import { auth } from "../firebase"
 
 const router = useRouter()
 const data = useMovieStore()
@@ -10,8 +12,8 @@ const data = useMovieStore()
 <template>
 	<header>
 		<img src="https://www.jobalign.com/wp-content/uploads/2017/07/Icon-Placeholder-1.png" @click="router.push('/')">
-		<button @click="router.push('/login')" v-if="!data.loggedIn">Login</button>
-		<button @click="router.push('/'); data.loggedIn = false" v-if="data.loggedIn">Logout</button>
+		<button @click="router.push('/login')" v-if="!auth.currentUser">Login</button>
+		<button @click="router.push('/'); signOut(auth)" v-if="auth.currentUser">Logout</button>
 	</header>
 </template>
 

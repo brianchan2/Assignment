@@ -4,10 +4,10 @@ import { useRouter } from "vue-router";
 import { useMovieStore } from "../stores/movie";
 import { auth, firestore } from "../firebase";
 import {
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signInWithEmailAndPassword,
+	createUserWithEmailAndPassword,
+	GoogleAuthProvider,
+	signInWithPopup,
+	signInWithEmailAndPassword,
 } from "firebase/auth";
 import { getDoc, doc } from "@firebase/firestore";
 
@@ -17,22 +17,59 @@ const password = ref("")
 const invalid = ref(false)
 const data = useMovieStore()
 
-const checkPass = () => {
-	if (username.value == "tmdb") {
-		if (password.value == "movies") {
-			router.push("/store")
-			data.loggedIn = true
+const login = async (type) => {
+	if (type == "email") {
+		try {
+			const { user } = await signInWithEmailAndPassword(
+				auth,
+				email.value,
+				passwordOne.value
+			);
+			store.user = user;
+			router.push("/store");
+		} catch (error) {
+			console.log(error);
 		}
 	}
-	else {
-		invalid.value = true
-		setTimeout(() => {
-			invalid.value = false
-		}, 1500)
+
+	if (type == "google") {
+		const provider = new GoogleAuthProvider();
+    const { user } = await signInWithPopup(auth, provider);
+
+    const cart = await getDoc(doc(firestore, "carts", user.email)).data()
+
+    data.cart = cart
+		data.user = user;
+    router.push("/store")
 	}
 }
 
-if (data.loggedIn) {
+const register = async(type) => {
+  if (type == "email") {
+		try {
+			const { user } = await signInWithEmailAndPassword(
+				auth,
+				email.value,
+				passwordOne.value
+			);
+			store.user = user;
+			router.push("/store");
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	if (type == "google") {
+		const provider = new GoogleAuthProvider();
+    const { user } = await signInWithPopup(auth, provider);
+
+    store.user = user;
+    router.push("/store");
+	}
+}
+
+
+if (auth.currentUser) {
 	router.push("/store")
 }
 
@@ -46,7 +83,11 @@ if (data.loggedIn) {
 				<h1>Login</h1>
 				<input v-model="username" placeholder="Username" type="text">
 				<input v-model="password" placeholder="Password" type="password">
-				<input type="submit" @submit.prevent="checkPass()" value="Login">
+        <button @click="login('email')">Login</button>
+        <div id="alt-login">
+          <button @click="login('google');"><img id="google-icon" src="https://www.transparentpng.com/thumb/google-logo/google-logo-png-icon-free-download-SUF63j.png"></button>
+          <button @click="login('google')"></button>
+        </div>
 				<h4 v-if="invalid">Invalid Credentials. Did you correctly type your credentials?</h4>
 			</div>
 		</div>
@@ -70,6 +111,19 @@ h3 {
 	text-decoration: underline;
 }
 
+#google-icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+#alt-login {
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: space-evenly;
+}
+
 h4 {
 	color: red;
 	font-weight: lighter;
@@ -91,7 +145,7 @@ input {
 
 #menu {
 	background-color: rgba(0, 0, 0, 0.5);
-	width: 20%;
+	width: 30%;
 	padding-bottom: 5%;
 	border-radius: 3%;
 }

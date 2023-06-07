@@ -4,8 +4,8 @@ import { useLocalStorage } from "@vueuse/core";
 export const useMovieStore = defineStore("movieId", {
   state: () => ({
     movies: [],
-    cart: useLocalStorage("cart", {}),
-    loggedIn: useLocalStorage("login", false),
+    cart: undefined,
+    user: useLocalStorage("user", null),
   }),
 
   actions: {
@@ -17,7 +17,6 @@ export const useMovieStore = defineStore("movieId", {
     removeFromCart(data) {
       console.log(this.cart[data.id]);
       if (this.cart[data.id]) {
-        console.log("Removed?");
         delete this.cart[data.id];
       }
     },

@@ -6,6 +6,7 @@ import Header from "../components/Header.vue"
 import Footer from "../components/Footer.vue"
 import Modal from "../components/Modal.vue"
 import { useRouter } from "vue-router"
+import { auth } from "../firebase"
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 const movieData = useMovieStore()
@@ -13,7 +14,6 @@ const selected = ref()
 const router = useRouter()
 
 if ((!movieData.movies || (movieData.movies.length <= 0))) {
-  console.log("Runnning")
   axios({
     url: "https://api.themoviedb.org/3/trending/movie/week",
     method: "GET",
@@ -42,7 +42,7 @@ async function closeModal() {
   selected.value = undefined
 }
 
-if (!movieData.loggedIn) {
+if (!auth.currentUser) {
   router.push("/login")
 }
 
