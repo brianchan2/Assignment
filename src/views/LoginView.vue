@@ -10,6 +10,7 @@ const invalid = ref(false)
 const data = useMovieStore()
 
 const checkPass = () => {
+	console.log(username.value, password.value)
 	if (username.value == "tmdb") {
 		if (password.value == "movies") {
 			router.push("/store")

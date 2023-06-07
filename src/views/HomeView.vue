@@ -5,7 +5,6 @@ import Footer from "../components/Footer.vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter()
-
 </script>
 
 <template>

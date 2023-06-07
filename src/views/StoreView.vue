@@ -1,11 +1,12 @@
 <script setup>
 import axios from "axios"
-import { useMovieStore } from "../stores/movie.js"
-import { ref } from "vue"
 import Header from "../components/Header.vue"
 import Footer from "../components/Footer.vue"
 import Modal from "../components/Modal.vue"
+
 import { useRouter } from "vue-router"
+import { useMovieStore } from "../stores/movie.js"
+import { ref } from "vue"
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 const movieData = useMovieStore()
