@@ -12,6 +12,7 @@ const API_KEY = import.meta.env.VITE_API_KEY;
 const movieData = useMovieStore()
 const selected = ref()
 const router = useRouter()
+const genre = ref()
 
 if ((!movieData.movies || (movieData.movies.length <= 0))) {
   axios({
@@ -53,6 +54,27 @@ if (!auth.currentUser) {
   <img id="cart" @click="router.push(`/cart`)"
     src="https://static.vecteezy.com/system/resources/previews/004/999/463/original/shopping-cart-icon-illustration-free-vector.jpg" />
   <h1 id="title">Popular</h1>
+  <select v-model="genre">
+    <option value="28">Action</option>
+    <option value="10751">Family</option>
+    <option value="878">Science Fiction</option>
+    <option value="12">Adventure</option>
+    <option value="14">Fantasy</option>
+    <option value="10770">TV Movie</option>
+    <option value="16">Animation</option>
+    <option value="36">History</option>
+    <option value="53">Thriller</option>
+    <option value="35">Comedy</option>
+    <option value="27">Horror</option>
+    <option value="10752">War</option>
+    <option value="80">Crime</option>
+    <option value="10402">Music</option>
+    <option value="37">Western</option>
+    <option value="99">Documentary</option>
+    <option value="9648">Mystery</option>
+    <option value="18">Drama</option>
+    <option value="10749">Romance</option>
+  </select>
   <div id="movies" v-if="movieData.movies">
     <div id="movie" v-for="movie in movieData.movies" @click="getDetails(movie)">
       <img :src="`https://image.tmdb.org/t/p/original${movie.poster}`" />
@@ -102,6 +124,13 @@ if (!auth.currentUser) {
   bottom: 10%;
   height: 10%;
   background-color: rgba(0, 0, 0, 0.7);
+}
+
+select {
+  color: white;
+  background-color: black;
+  margin-left: 2rem;
+  margin-bottom: 2rem;
 }
 
 img {
