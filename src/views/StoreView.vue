@@ -13,6 +13,10 @@ const movieData = useMovieStore()
 const selected = ref()
 const router = useRouter()
 const genre = ref()
+const page = ref(1)
+const search = ref()
+const totalPages = ref(1)
+const currentURL = ref()
 
 if ((!movieData.movies || (movieData.movies.length <= 0))) {
   axios({
@@ -38,6 +42,37 @@ function getDetails(movie) {
   selected.value = movie.id
 }
 
+async function getMovies(url, options) {
+  console.log(search.value)
+  const data = (await axios({
+    url: url,
+    method: "GET",
+    params: {
+      api_key: API_KEY,
+      region: "US",
+      language: "en",
+      include_adult: false,
+      page: page.value,
+      ...options
+    }
+  })).data
+
+  console.log(data)
+
+  movieData.movies = []
+
+  data.results.forEach(movie => {
+    movieData.movies.push({
+      id: movie.id,
+      poster: movie.poster_path,
+      title: movie.title
+    })
+  })
+
+  totalPages.value = data.total_pages;
+  currentURL.value = url;
+}
+
 async function closeModal() {
   console.log("working?")
   selected.value = undefined
@@ -54,7 +89,9 @@ if (!auth.currentUser) {
   <img id="cart" @click="router.push(`/cart`)"
     src="https://static.vecteezy.com/system/resources/previews/004/999/463/original/shopping-cart-icon-illustration-free-vector.jpg" />
   <h1 id="title">Popular</h1>
-  <select v-model="genre">
+  <select v-model="genre" @change="getMovies('https://api.themoviedb.org/3/discover/movie', {
+    with_genres: genre,
+  }); page = 1">
     <option value="28">Action</option>
     <option value="10751">Family</option>
     <option value="878">Science Fiction</option>
@@ -75,12 +112,43 @@ if (!auth.currentUser) {
     <option value="18">Drama</option>
     <option value="10749">Romance</option>
   </select>
+  <input id="search" type="search" v-model="search" placeholder="Search" v-on:keyup.enter="getMovies('https://api.themoviedb.org/3/search/movie', {
+              query: search,
+            }); page = 1">
   <div id="movies" v-if="movieData.movies">
     <div id="movie" v-for="movie in movieData.movies" @click="getDetails(movie)">
       <img :src="`https://image.tmdb.org/t/p/original${movie.poster}`" />
       <h1>{{ movie.title }}</h1>
     </div>
   </div>
+  <div class="pagination">
+    <button @click="
+      getMovies(
+        currentURL,
+        {
+          with_genres: genre,
+          query: search,
+        },
+        page === 1 ? 1 : page--
+      )
+      ">
+      Prev
+    </button>
+    <p>{{ `Page ${page} of ${totalPages}` }}</p>
+    <button @click="
+      getMovies(
+        currentURL,
+        {
+          with_genres: genre,
+          query: search,
+        },
+        page >= totalPages ? totalPages : page++
+      )
+      ">
+      Next
+    </button>
+  </div>
+
   <Footer />
   <Modal v-if="selected" :movie="selected" @toggleModal=closeModal() />
 </template>
@@ -92,6 +160,24 @@ if (!auth.currentUser) {
 
 #cart {
   z-index: 1;
+}
+
+#search {
+  background-color: gray;
+
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.pagination button {
+  background-color: gray;
+  width: 4rem;
+  height: 2rem;
+  border-radius: 15%;
 }
 
 #movies {
