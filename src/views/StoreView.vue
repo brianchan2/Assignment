@@ -113,8 +113,8 @@ if (!auth.currentUser) {
     <option value="10749">Romance</option>
   </select>
   <input id="search" type="search" v-model="search" placeholder="Search" v-on:keyup.enter="getMovies('https://api.themoviedb.org/3/search/movie', {
-              query: search,
-            }); page = 1">
+    query: search,
+  }); page = 1">
   <div id="movies" v-if="movieData.movies">
     <div id="movie" v-for="movie in movieData.movies" @click="getDetails(movie)">
       <img :src="`https://image.tmdb.org/t/p/original${movie.poster}`" />

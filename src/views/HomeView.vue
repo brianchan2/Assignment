@@ -12,7 +12,8 @@ const router = useRouter()
   <div>
     <Header />
     <div id="hero">
-      <img src="https://media.istockphoto.com/id/1244034031/vector/cinema-poster-with-cola-film-strip-and-clapper-vector.jpg?s=612x612&w=0&k=20&c=JN4E5qJgcq3qm89rSc2BIJT6AZ80MvRJie__r3OENY8=">
+      <img
+        src="https://media.istockphoto.com/id/1244034031/vector/cinema-poster-with-cola-film-strip-and-clapper-vector.jpg?s=612x612&w=0&k=20&c=JN4E5qJgcq3qm89rSc2BIJT6AZ80MvRJie__r3OENY8=">
       <div id="content">
         <h1>Enjoy Your Movies Anytime</h1>
         <p id="description">
@@ -123,4 +124,5 @@ h1 {
   p {
     font-size: 1rem;
   }
-}</style>
+}
+</style>

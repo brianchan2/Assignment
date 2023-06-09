@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { useLocalStorage } from "@vueuse/core";
 import { firestore, auth } from "../firebase";
-import { setDoc, doc } from "firebase/firestore"
+import { setDoc, doc } from "firebase/firestore";
 
 export const useMovieStore = defineStore("movieId", {
   state: () => ({
