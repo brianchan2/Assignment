@@ -12,12 +12,10 @@ export const useMovieStore = defineStore("movieId", {
   actions: {
     async addToCart(data) {
       this.cart[data.id] = data;
-      console.log("DATA: ", this.cart);
       await setDoc(doc(firestore, "cart", auth.currentUser.email), this.cart);
     },
 
     async removeFromCart(data) {
-      console.log(this.cart[data.id]);
       if (this.cart[data.id]) {
         delete this.cart[data.id];
         await setDoc(doc(firestore, "cart", auth.currentUser.email), this.cart);

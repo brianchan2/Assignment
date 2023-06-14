@@ -164,7 +164,10 @@ if (!auth.currentUser) {
 
 #search {
   background-color: gray;
+}
 
+::placeholder {
+  color:  white;
 }
 
 .pagination {

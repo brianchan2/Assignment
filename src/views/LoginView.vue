@@ -21,7 +21,6 @@ const data = useMovieStore()
 
 const login = async (type) => {
 	if (type == "email") {
-		console.log(email, password)
 		try {
 			await signInWithEmailAndPassword(
 				auth,
@@ -30,7 +29,6 @@ const login = async (type) => {
 			);
 			router.push("/store");
 		} catch (error) {
-			console.log(error)
 			invalid.value = true
 			setTimeout(() => {
 				invalid.value = false
@@ -89,12 +87,12 @@ if (auth.currentUser) {
 				<input v-model="email" placeholder="Email" type="text">
 				<input v-model="password" placeholder="Password" type="password">
 				<button @click="login('email')">Login</button>
+				<h5 v-if="invalid">Invalid Credentials. Did you correctly type your credentials?</h5>
 				<div id="alt-login">
 					<button @click="login('google');"><img id="google-icon"
 							src="https://www.transparentpng.com/thumb/google-logo/google-logo-png-icon-free-download-SUF63j.png"></button>
 				</div>
 				<h4 @click="loggingIn = false">Need an account?</h4>
-				<h5 v-if="invalid">Invalid Credentials. Did you correctly type your credentials?</h5>
 			</div>
 			<div id="content" v-if="!loggingIn">
 				<h1>Register</h1>
